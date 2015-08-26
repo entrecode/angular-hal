@@ -7,7 +7,7 @@
   ],
   "main": "angular-hal.js",
   "dependencies": {
-    "rfc6570": "~0.1",
+    "rfc6570": "https://github.com/entrecode/rfc6570.git",
     "angular": "~1"
   },
   "devDependencies": {
