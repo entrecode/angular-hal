@@ -1,5 +1,6 @@
 {
   "name": "angular-hal",
+  "version": "0.1.6",
   "ignore": [
     "**/.*",
     "node_modules",
