@@ -47,25 +47,25 @@ angular.module('angular-hal', [])
             defineHiddenProperty(this, '$has', function (rel) {
                 return rel in links;
             });
-            defineHiddenProperty(this, '$get', function (rel, params) {
+            defineHiddenProperty(this, '$get', function (rel, params, options) {
                 var link = links[rel];
-                return callLink('GET', link, params);
+                return callLink('GET', link, params, undefined, options);
             });
-            defineHiddenProperty(this, '$post', function (rel, params, data) {
+            defineHiddenProperty(this, '$post', function (rel, params, data, options) {
                 var link = links[rel];
-                return callLink('POST', link, params, data);
+                return callLink('POST', link, params, data, options);
             });
-            defineHiddenProperty(this, '$put', function (rel, params, data) {
+            defineHiddenProperty(this, '$put', function (rel, params, data, options) {
                 var link = links[rel];
-                return callLink('PUT', link, params, data);
+                return callLink('PUT', link, params, data, options);
             });
-            defineHiddenProperty(this, '$patch', function (rel, params, data) {
+            defineHiddenProperty(this, '$patch', function (rel, params, data, options) {
                 var link = links[rel];
-                return callLink('PATCH', link, params, data);
+                return callLink('PATCH', link, params, data, options);
             });
-            defineHiddenProperty(this, '$del', function (rel, params) {
+            defineHiddenProperty(this, '$del', function (rel, params, options) {
                 var link = links[rel];
-                return callLink('DELETE', link, params);
+                return callLink('DELETE', link, params, undefined, options);
             });
 
 
@@ -133,8 +133,9 @@ angular.module('angular-hal', [])
                 return href;
             } //hrefLink
 
-            function callLink(method, link, params, data) {
+            function callLink(method, link, params, data, options) {
                 var linkHref;
+                options = options || {};
 
                 if (Array.isArray(link)) {
                     return $q.all(link.map(function (link) {
@@ -145,7 +146,15 @@ angular.module('angular-hal', [])
                 }
 
                 linkHref = hrefLink(link, params);
+              if (method === 'GET' && !options.ignoreEmbedded) {
+                if (linkHref in embedded) {
+                  return embedded[linkHref];
+                }
                 return callService(method, linkHref, options, data);
+              } else {
+                return callService(method, linkHref, options, data);
+              }
+  
 
             } //callLink
 
