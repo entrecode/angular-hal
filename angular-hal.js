@@ -145,14 +145,7 @@ angular.module('angular-hal', [])
                 }
 
                 linkHref = hrefLink(link, params);
-
-                if (method === 'GET') {
-                    if (linkHref in embedded) return embedded[linkHref];
-
-                    return callService(method, linkHref, options, data);
-                } else {
-                    return callService(method, linkHref, options, data);
-                }
+                return callService(method, linkHref, options, data);
 
             } //callLink
 
